@@ -58,9 +58,16 @@ program
   .command('tags')
   .description('list all tags')// TODO: add options to sort by tag or by directory.
   .action(function() {
-    var config = readConfig();
+    var config = readConfig(),
+      keys;
     if (_.isEmpty(config)) {
-      console.log('No tags. Run `multitasker tag <tag>` to tag a directory.'.blue)
+      console.log('No tags. Run `multitasker tag -h` to see how to tag directories.'.blue)
+    }
+    else {
+      keys = _.keys(_.omit(config, function(value) { return !_.isEmpty(value); })).sort();
+      keys.forEach(function(key) {
+        console.log(key.blue, ' => '.cyan, config[key].join(', ').blue);
+      });
     }
   });
 
