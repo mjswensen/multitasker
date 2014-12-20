@@ -40,11 +40,18 @@ program
   });
 
 program
-  .command('untag [tag]')
-  .description('untag the current directory of all tags (or the given tag only)')
-  .action(function(tag) {
-    console.log('untag');
-    console.log('tag: ', tag);
+  .command('untag <tag> [dirs...]')
+  .description('untag the current directory (or given directories)')
+  .action(function(tag, dirs) {
+    var config = readConfig();
+    if (!dirs.length) { dirs.push(process.cwd()); }
+    if (_.isArray(config[tag])) {
+      config[tag] = _.without.apply(this,
+        [config[tag]].concat(dirs.map(function(dir) { return path.resolve(dir); }))
+      );
+    }
+    if (_.isEmpty(config[tag])) { delete config[tag]; }
+    writeConfig(config);
   });
 
 program
