@@ -1,0 +1,77 @@
+#! /usr/bin/env node
+
+process.title = 'multitasker';
+
+var fs = require('fs'),
+  path = require('path'),
+  program = require('commander'),
+  colors = require('colors'),
+  moment = require('moment'),
+  _ = require('underscore-node');
+
+program
+  .version('0.0.1');
+
+program
+  .command('exec <tag> <commands...>')
+  .description('execute the given commands in the directories tagged with the given tag')
+  .option('-s, --serial', 'execute the command in each directory serially instead of in parallel')
+  .action(function(tag, commands) {
+    console.log('exec');
+    console.log('tag: ', tag);
+    console.log('commands: ', commands);
+  });
+
+program
+  .command('tag <tag> [dirs...]')
+  .description('tag the current directory (or given directories)')
+  .action(function(tag, dirs) {
+    var config = readConfig();
+    if (!config[tag]) { config[tag] = []; }
+    if (!dirs.length) { dirs.push(process.cwd()); }
+    config[tag] = _.uniq(
+      config[tag].concat(
+        dirs.map(function(dir) {
+          return path.resolve(dir);
+        })
+      )
+    );
+    writeConfig(config);
+  });
+
+program
+  .command('untag [tag]')
+  .description('untag the current directory of all tags (or the given tag only)')
+  .action(function(tag) {
+    console.log('untag');
+    console.log('tag: ', tag);
+  });
+
+program
+  .command('tags')
+  .description('list all tags')// TODO: add options to sort by tag or by directory.
+  .action(function() {
+    var config = readConfig();
+    if (_.isEmpty(config)) {
+      console.log('No tags. Run `multitasker tag <tag>` to tag a directory.'.blue)
+    }
+  });
+
+program.parse(process.argv);
+
+function getConfigPath() {
+  var home = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
+  return path.join(home, '.multitasker.conf');
+}
+
+function readConfig() {
+  try {
+    return JSON.parse(fs.readFileSync(getConfigPath()));
+  } catch(e) {
+    return {};
+  }
+}
+
+function writeConfig(config) {
+  fs.writeFileSync(getConfigPath(), JSON.stringify(config));
+}

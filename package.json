@@ -1,0 +1,25 @@
+{
+  "name": "multitasker",
+  "version": "0.0.1",
+  "description": "A utility for running any command in multiple directories.",
+  "keywords": [
+    "multiple",
+    "multitask",
+    "git-run",
+    "mr",
+    "repository",
+    "management"
+  ],
+  "author": {
+    "name": "Matt Swensen",
+    "email": "swensen.matthew@gmail.com",
+    "url": "https://github.com/mjswensen"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "colors": "^1.0.3",
+    "commander": "^2.5.1",
+    "moment": "^2.8.4",
+    "underscore-node": "^0.1.2"
+  }
+}
