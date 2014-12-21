@@ -8,7 +8,7 @@
 
 ## Usage
 
-`multitasker` keeps track of directories via tags you define (stored in `~/.multitasker.conf`). Commands can then be executed in the tagged directories.
+`multitasker` keeps track of directories via tags you define. Commands can then be executed in the tagged directories.
 
 ### Managing tags
 
@@ -19,7 +19,7 @@ $ multitasker tag work # if no directories are provided, the current directory i
 $ multitasker tag work ~/work/client ~/work/server # or you can specify directories
 ```
 
-You can view your tagged directories via `multitasker tags` and un-tag directories using `multitasker untag`.
+You can view your tagged directories via `multitasker tags` and un-tag directories using `multitasker untag`. Tags are stored in `~/.multitasker.conf`.
 
 ### Executing commands
 
