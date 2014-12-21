@@ -70,6 +70,13 @@ program
       setTimeout(execute, 1);
     }
 
+  })
+  .on('--help', function() {
+    console.log('  Examples:');
+    console.log('');
+    console.log('    $ multitasker exec work git pull');
+    console.log('    $ multitasker exec projects "ls -alF"');
+    console.log('');
   });
 
 program
@@ -87,6 +94,13 @@ program
       )
     );
     writeConfig(config);
+  })
+  .on('--help', function() {
+    console.log('  Examples:');
+    console.log('');
+    console.log('    $ multitasker tag work');
+    console.log('    $ multitasker tag projects ../');
+    console.log('');
   });
 
 program
@@ -102,6 +116,13 @@ program
     }
     if (_.isEmpty(config[tag])) { delete config[tag]; }
     writeConfig(config);
+  })
+  .on('--help', function() {
+    console.log('  Examples:');
+    console.log('');
+    console.log('    $ multitasker untag work');
+    console.log('    $ multitasker untag projects ../');
+    console.log('');
   });
 
 program
