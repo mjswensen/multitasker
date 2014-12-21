@@ -56,22 +56,39 @@ program
 
 program
   .command('tags')
-  .description('list all tags')// TODO: add options to sort by tag or by directory.
-  .action(function() {
+  .description('list all tags')
+  .option('-r, --reverse', 'list tags by directory rather than by tag')
+  .action(function(program) {
     var config = readConfig(),
-      keys;
+      keys,
+      tag;
     if (_.isEmpty(config)) {
       console.log('No tags. Run `multitasker tag -h` to see how to tag directories.'.blue)
     }
     else {
+      if (program.reverse) {
+        config = reverseTags(config);
+      }
       keys = _.keys(_.omit(config, function(value) { return !_.isEmpty(value); })).sort();
       keys.forEach(function(key) {
-        console.log(key.blue, ' => '.cyan, config[key].join(', ').blue);
+        console.log(key.green, '=>'.cyan, config[key].sort().join(', ').blue);
       });
     }
   });
 
 program.parse(process.argv);
+
+function reverseTags(tags) {
+  var tag,
+    dirs = {};
+  for (tag in tags) {
+    tags[tag].forEach(function(dir) {
+      if (!dirs[dir]) { dirs[dir] = []; }
+      dirs[dir].push(tag);
+    });
+  }
+  return dirs;
+}
 
 function getConfigPath() {
   var home = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
