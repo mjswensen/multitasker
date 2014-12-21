@@ -1,4 +1,4 @@
-#! /usr/bin/env node
+#!/usr/bin/env node
 
 process.title = 'multitasker';
 
@@ -7,7 +7,8 @@ var fs = require('fs'),
   program = require('commander'),
   colors = require('colors'),
   moment = require('moment'),
-  _ = require('underscore-node');
+  _ = require('underscore-node'),
+  exec = require('child_process').exec;
 
 program
   .version('0.0.1');
@@ -15,11 +16,60 @@ program
 program
   .command('exec <tag> <commands...>')
   .description('execute the given commands in the directories tagged with the given tag')
+  .option('-m, --max [number]', 'maximum number of concurrent executions [Infinity]', Infinity)
   .option('-s, --serial', 'execute the command in each directory serially instead of in parallel')
-  .action(function(tag, commands) {
-    console.log('exec');
-    console.log('tag: ', tag);
-    console.log('commands: ', commands);
+  .action(function(tag, commands, program) {
+
+    var config = readConfig(),
+      dirs,
+      command = commands.join(' '),
+      i,
+      hub,
+      executed = 0,
+      total,
+      loop,
+      hub,
+      start = moment(),
+      end;
+
+    if (!config[tag]) {
+      console.log('Tag "%s" does not exist; aborting.'.red, tag);
+      process.exit(1);
+    }
+
+    dirs = config[tag];
+    total = dirs.length;
+    loop = program.serial ? 1 : Math.min(total, program.max);
+
+    hub = new (require('events').EventEmitter);
+    hub.on('executed', function() {
+      executed++;
+      if (executed == total) {
+        end = moment();
+        console.log('Done. (%s)'.green, moment.duration(end - start).humanize());
+      }
+    });
+
+    function execute() {
+      var dir = dirs.pop();
+      if (dir) {
+        exec(command, { cwd: dir }, function(error, stdout, stderr) {
+          console.log(dir.blue);
+          if (error != null) { console.log(error.message.red); }
+          else {
+            console.log(stdout);
+            if (stderr) { console.log(stderr); }
+          }
+          hub.emit('executed');
+          execute();
+        });
+      }
+    }
+
+    for (i = 0; i < loop; i++) {
+      setTimeout(execute, 1);
+    }
+
   });
 
 program
