@@ -35,4 +35,4 @@ Commands can also be run sequentially in each tagged directory, with the `-s` or
 
 ### Help and options
 
-For more options, run `multitasker -h` or `multitasker <subcommand> h-`.
+For more options, run `multitasker -h` or `multitasker <subcommand> -h`.
