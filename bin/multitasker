@@ -90,6 +90,8 @@ program
       config[tag].concat(
         dirs.map(function(dir) {
           return path.resolve(dir);
+        }).filter(function(dir) {
+          return fs.statSync(dir).isDirectory();
         })
       )
     );
