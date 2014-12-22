@@ -14,15 +14,15 @@ program
   .version('0.0.1');
 
 program
-  .command('exec <tag> <commands...>')
-  .description('execute the given commands in the directories tagged with the given tag')
+  .command('exec <tag> <command...>')
+  .description('execute the given command in the directories tagged with the given tag')
   .option('-m, --max [number]', 'maximum number of concurrent executions [Infinity]', Infinity)
   .option('-s, --serial', 'execute the command in each directory serially instead of in parallel')
-  .action(function(tag, commands, program) {
+  .action(function(tag, command, program) {
 
     var config = readConfig(),
       dirs,
-      command = commands.join(' '),
+      cmd = command.join(' '),
       i,
       hub,
       executed = 0,
@@ -60,7 +60,7 @@ program
     function execute() {
       var dir = dirs.pop();
       if (dir) {
-        exec(command, { cwd: dir }, function(error, stdout, stderr) {
+        exec(cmd, { cwd: dir }, function(error, stdout, stderr) {
           console.log(dir.blue);
           if (error != null) { console.log(error.message.red); }
           else {

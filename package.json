@@ -1,6 +1,6 @@
 {
   "name": "multitasker",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A utility for executing commands in multiple directories.",
   "keywords": [
     "multiple",
