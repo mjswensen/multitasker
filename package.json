@@ -1,6 +1,6 @@
 {
   "name": "multitasker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A utility for executing commands in multiple directories.",
   "keywords": [
     "multiple",
@@ -23,6 +23,10 @@
     "underscore-node": "^0.1.2"
   },
   "main": "bin/multitasker",
+  "preferGlobal": "true",
+  "bin": {
+    "multitasker": "bin/multitasker"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/mjswensen/multitasker.git"
