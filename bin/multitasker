@@ -30,7 +30,8 @@ program
       loop,
       hub,
       start = moment(),
-      end;
+      end,
+      duration;
 
     if (!config[tag]) {
       console.log('Tag "%s" does not exist; aborting.'.red, tag);
@@ -46,7 +47,13 @@ program
       executed++;
       if (executed == total) {
         end = moment();
-        console.log('Done. (%s)'.green, moment.duration(end - start).humanize());
+        duration = moment.duration(end - start);
+        console.log(
+          'Done. (%s)'.green,
+          (duration > moment.duration(2, 's') ?
+            duration.humanize() :
+            duration.asMilliseconds() + ' milliseconds')
+        );
       }
     });
 
