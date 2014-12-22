@@ -135,6 +135,25 @@ program
   });
 
 program
+  .command('rmtag <tag>')
+  .description('remove the given tag for all directories')
+  .action(function(tag) {
+    var config = readConfig();
+    if (!config[tag]) {
+      console.log('Tag "%s" does not exist.'.red, tag);
+      process.exit(1);
+    }
+    delete config[tag];
+    writeConfig(config);
+  })
+  .on('--help', function() {
+    console.log('  Examples:');
+    console.log('');
+    console.log('    $ multitasker rmtag projects');
+    console.log('');
+  });
+
+program
   .command('tags')
   .description('list all tags')
   .option('-r, --reverse', 'list tags by directory rather than by tag')

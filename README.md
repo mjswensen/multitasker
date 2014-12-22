@@ -19,7 +19,7 @@ $ multitasker tag work # if no directories are provided, the current directory i
 $ multitasker tag work ~/work/client ~/work/server # or you can specify directories
 ```
 
-You can view your tagged directories via `multitasker tags` and un-tag directories using `multitasker untag`. Tags are stored in `~/.multitasker.conf`.
+You can view your tagged directories via `multitasker tags` and un-tag directories using `multitasker untag` (or delete tags altogether using `multitasker rmtag`). Tags are stored in `~/.multitasker.conf`.
 
 ### Executing commands
 
